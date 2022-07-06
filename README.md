@@ -1,23 +1,44 @@
-# aw06
+# aw06 实验报告
 
+## 1. aw06-batch
 
-[Amazon Review Data (2018)](https://nijianmo.github.io/amazon/index.html) has a huge products metadata set of multiple categories.
+#### 实现目标:
 
-|category| reviews | metadata |
-|--| -- | -- |
-|Amazon Fashion|reviews (883,636 reviews)|metadata (186,637 products)|
-|All Beauty|reviews (371,345 reviews)|metadata (32,992 products)|
-|Appliances|reviews (602,777 reviews)|metadata (30,459 products)|
-| ... |
-|Tools and Home Improvement|reviews (9,015,203 reviews)|metadata (571,982 products)|
-Toys and Games|reviews (8,201,231 reviews)|metadata (634,414 products)|
-Video Games|reviews (2,565,349 reviews)|metadata (84,893 products)|
+把得到的Amazon Json数据转为product并存到数据库中
 
-Please finish the following tasks:
+#### 数据选择
 
-- Download no less than two categories of these metadata.
-- Referring the example code in this repo, convert each line in the downloaded files into a POJO of `Product` class and save the object in a database like MySQL. 
-- Integrate the database containing Amazon products with your own AW04 project and build an Amazon WebPOS system.
+选择meta_Magazine_Subscriptions.json和meta_Gift_Cards.json作为原始数据
 
+选择MySQL作为数据持久化的储存方式
 
-And, of course, always try to make the system run as fast as possible.
+#### 具体实现
+
+使用已经提供的文件将json文件转为若干product；
+
+使用mvn引入与MySQL相关的依赖，并配置properties文件，连接本地数据库；
+
+在productWriter中注入JdbcTemplate并在write函数中执行SQL语句，实现product数据的写库
+
+#### 实现结果
+
+![db](result\db.png)
+
+## 2. aw06-pos
+
+#### 实现目标：
+
+基于aw04的pos，利用batch中产生的数据库作为商品数据库，提供商品列表查询与单个商品查询功能
+
+#### 数据选择
+
+使用MySQL作为商品数据库
+
+#### 具体实现
+
+使用mvn引入与MySQL相关的依赖，并配置properties文件，连接本地数据库；
+
+在AmazonDB中注入JdbcTemplate，在提供的查询功能中执行SQL语句，实现数据查找功能
+
+#### 实现结果
+![db](result\result.png)
